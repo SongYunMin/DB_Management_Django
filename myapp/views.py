@@ -4,17 +4,16 @@ from ipware.ip import get_client_ip
 
 # Create your views here.
 def home(request):
+    ip = get_client_ip(request)
+    if ip[0] in '127.0.0.1':
+        return render(request, 'home.html', {
+            'ipaddress': 'LocalHost'
+        })
+    else:
+        return render(request, 'home.html', {
+            'ipaddress': ip[0]
+        })
     # render : 첫번째 인자부터 요청, 템플릿 이름, 딕셔너리형 자료형
-    return render(request, 'home.html',{
-        'ipAddress': get_client_ip(request)
-    })
-
-
-# def ipAddress(request):
-#     ip = get_client_ip(request)
-#     return render(request, 'home.html', {
-#         'ipAddress': ip
-#     })
 
 
 def about(request):
@@ -37,5 +36,3 @@ def result(request):
     return render(request, 'result.html',
                   {'full': text, 'total': len(words),
                    'dictionary': word_dictionary.items()})
-
-
